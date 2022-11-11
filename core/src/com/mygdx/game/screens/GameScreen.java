@@ -126,6 +126,7 @@ public class GameScreen extends PhysicsScreen {
     @Override
     public void hide() {
         super.hide();
+        die.play();
         music.stop();
     }
 
