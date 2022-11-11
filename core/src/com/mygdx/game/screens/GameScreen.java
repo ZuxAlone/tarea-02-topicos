@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.core.objects.PhysicsObject;
 import com.mygdx.game.core.screens.PhysicsScreen;
 import com.mygdx.game.entities.Floor;
@@ -31,36 +32,39 @@ public class GameScreen extends PhysicsScreen {
     private Sound die;
     private Sound jump;
 
+    private long startTime = System.currentTimeMillis();
+    private long currentTime = 0;
+
     @Override
     protected void init() {
         this.debugging = true;
         this.gravity = new Vector2(0,-10);
         super.init();
         loadSounds();
+
         Texture texture = AssetsManager.getAssetManager().get("player.png");
-        player = new Player(world,texture,new Vector2(1.5f,1.5f));
+        player = new Player(world,texture,new Vector2(2f,2f));
         addActor(player);
 
-        player2 = new Player(world,texture,new Vector2(15,2));
-        addActor(player2);
         floorFactory = new FloorFactory();
         List<Texture> textures = new ArrayList<>();
         texture = AssetsManager.getAssetManager().get("floor.png");
         textures.add(texture);
         texture = AssetsManager.getAssetManager().get("overfloor.png");
         textures.add(texture);
-        floorFactory.addObject(world,new Vector2(0,1),textures,1000);
+        floorFactory.addObject(world,new Vector2(1,1),textures,1000);
         for (Floor floor:floorFactory.floors) {
             addActor(floor);
         }
-        texture = AssetsManager.getAssetManager().get("overfloor.png");
+
+        texture = AssetsManager.getAssetManager().get("spike.png");
         spikeFactory = new SpikeFactory();
         spikeFactory.addObject(world,texture,new Vector2(8,1));
-        spikeFactory.addObject(world,texture,new Vector2(23,2));
-        spikeFactory.addObject(world,texture,new Vector2(35,2));
-        spikeFactory.addObject(world,texture,new Vector2(50,1));
-        for (Spike floor:spikeFactory.spikes) {
-            addActor(floor);
+        spikeFactory.addObject(world,texture,new Vector2(9,1));
+        spikeFactory.addObject(world,texture,new Vector2(10,1));
+        spikeFactory.addObject(world,texture,new Vector2(11,1));
+        for (Spike spike:spikeFactory.spikes) {
+            addActor(spike);
         }
         /**/
         /*world.setContactListener(new ContactListener() {
@@ -92,7 +96,8 @@ public class GameScreen extends PhysicsScreen {
         jump = AssetsManager.getAssetManager().get("audio/jump.ogg");
         die = AssetsManager.getAssetManager().get("audio/die.ogg");
         //jump.play();
-        die.play();
+        music.play();
+        music.setLooping(true);
     }
 
     @Override
@@ -101,6 +106,16 @@ public class GameScreen extends PhysicsScreen {
         if(Gdx.input.isTouched()){
             player.jump();
         }
+
+        long lastTime = currentTime;
+        currentTime = (System.currentTimeMillis() - startTime) / 1000;
+
+        if (lastTime < currentTime)
+            Gdx.app.log("Elapsed Time", ""+currentTime);
+
+        if (currentTime == 5) {
+            MyGdxGame.instance.setScreen(new GameoverScreen());
+        }
     }
 
     @Override
@@ -108,6 +123,11 @@ public class GameScreen extends PhysicsScreen {
 
     }
 
+    @Override
+    public void hide() {
+        super.hide();
+        music.stop();
+    }
 
     @Override
     public void dispose() {

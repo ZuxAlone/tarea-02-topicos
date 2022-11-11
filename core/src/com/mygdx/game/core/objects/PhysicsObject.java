@@ -64,7 +64,6 @@ public abstract class PhysicsObject extends GameObject {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        Gdx.app.log("DRAW",(body.getPosition().x-0.5f)* Constants.PIXELS_IN_METERS+"");
         setPosition((body.getPosition().x-0.5f)* Constants.PIXELS_IN_METERS,(body.getPosition().y-0.5f)*Constants.PIXELS_IN_METERS);
         batch.draw(texture,getX(),getY(),getWidth(),getHeight());
     }

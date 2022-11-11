@@ -23,7 +23,7 @@ public class Spike extends PhysicsObject {
     protected void createFixture() {
         float positionX = position.x;
         float positionY = position.y + 0.5f;
-        body = world.createBody(PhysicsFactory.createDef(BodyDef.BodyType.DynamicBody,new Vector2(positionX,positionY)));
+        body = world.createBody(PhysicsFactory.createDef(BodyDef.BodyType.StaticBody,new Vector2(positionX,positionY)));
         Vector2[] vertices = new Vector2[3];
         vertices[0] = new Vector2(-0.5f,0.5f);
         vertices[1] = new Vector2(0.5f,-0.5f);

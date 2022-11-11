@@ -1,14 +1,17 @@
 package com.mygdx.game.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.core.Constants;
 import com.mygdx.game.core.objects.PhysicsObject;
 import com.mygdx.game.factory.PhysicsFactory;
+import com.mygdx.game.screens.MenuScreen;
 
 public class Player extends PhysicsObject {
     public Player(World world, Texture texture, Vector2 position) {
@@ -17,12 +20,11 @@ public class Player extends PhysicsObject {
 
     @Override
     protected void update(float delta) {
-
     }
 
     @Override
     protected void createFixture() {
-        PolygonShape playerShape = PhysicsFactory.createShape(new Vector2(0.5f,0.5f));
+        PolygonShape playerShape = PhysicsFactory.createShape(position);
         body = world.createBody(PhysicsFactory.createDef(BodyDef.BodyType.DynamicBody,position));
         fixture =body.createFixture(playerShape,1);
         playerShape.dispose();
@@ -33,6 +35,6 @@ public class Player extends PhysicsObject {
 
     public void jump(){
         Vector2 position = body.getPosition();
-        body.applyLinearImpulse(0,150,position.x,position.y,true);
+        body.applyLinearImpulse(0,5,position.x,position.y,true);
     }
 }

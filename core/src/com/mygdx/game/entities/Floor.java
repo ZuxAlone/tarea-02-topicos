@@ -50,7 +50,7 @@ public class Floor extends PhysicsObject {
         floorShape.dispose();
 
         setSize(width* Constants.PIXELS_IN_METERS,Constants.PIXELS_IN_METERS);
-        setPosition(position.x*Constants.PIXELS_IN_METERS,(positionY-1)*Constants.PIXELS_IN_METERS);
+        setPosition(position.x,position.y);
     }
 
     @Override
